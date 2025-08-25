@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/Login';
-import RegisterPage from './pages/Register';
-import HomePage from './pages/Home';
+import LoginPage from './pages/Login/index';
+import RegisterPage from './pages/Register/index';
+import HomePage from './pages/Home/index';
+import ProfessorsDetails from './pages/Professors/index';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path='/professor/:id' element={<ProfessorsDetails />}/>
     </Routes>
   );
 }

@@ -1,9 +1,9 @@
-import logo from '../assets/react.svg';
-import musicianCello from '../assets/react.svg';
-import musicianFlute from '../assets/react.svg';
-import musicianGuitar from '../assets/react.svg';
-import professorImg from '../assets/react.svg';
-import '../index.css';
+import logo from '../../assets/react.svg';
+import musicianCello from '../../assets/react.svg';
+import musicianFlute from '../../assets/react.svg';
+import musicianGuitar from '../../assets/react.svg';
+import professorImg from '../../assets/react.svg';
+import './Home.css';
 
 const professors = [
     { name: 'Tatiane Santos', location: 'União da Vitória - PR' },

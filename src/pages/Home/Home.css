@@ -1,0 +1,234 @@
+.home-container {
+  width: 100%;
+  max-width: 1400px;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.home-header {
+  margin-bottom: 4rem;
+}
+
+.home-logo {
+  width: 60px;
+}
+
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 500px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 2rem;
+}
+
+.hero-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  font-size: 1.1rem;
+}
+
+.hero-features li {
+  margin-bottom: 0.75rem;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #d3d3d3;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+}
+
+.search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #121212;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.search-bar .search-icon,
+.search-bar .search-button {
+  color: #121212;
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hero-images {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+}
+
+.image-arch {
+  background-color: #d3d3d3;
+  border-radius: 999px 999px 0 0;
+  overflow: hidden;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.image-arch img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  padding-bottom: 20%;
+}
+
+.image-arch.arch-1 {
+  height: 350px;
+}
+
+.image-arch.arch-2 {
+  height: 300px;
+}
+
+.image-arch.arch-3 {
+  height: 275px;
+  transform: rotate(180deg);
+  margin-bottom: auto;
+  align-items: baseline;
+}
+
+.image-arch.arch-3 img {
+  transform: rotate(180deg);
+}
+
+.instruments-section {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 6rem 0;
+}
+
+.instrument-icon {
+  background-color: #d3d3d3;
+  color: #121212;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.professors-section {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.professors-section h2 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 3rem;
+}
+
+.professors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.professor-card {
+  text-align: center;
+}
+
+.professor-card img {
+  width: 100%;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+}
+
+.professor-card h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.professor-card p {
+  color: #b3b3b3;
+  margin: 0.25rem 0 0 0;
+}
+
+.more-professors-btn {
+  background-color: #d3d3d3;
+  color: #121212;
+  border: none;
+  border-radius: 50px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.more-professors-btn span {
+  background-color: #121212;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-footer {
+  text-align: center;
+  margin-top: 5rem;
+  color: #b3b3b3;
+}
+
+@media (max-width: 900px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-images {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .image-arch {
+    width: 100px;
+  }
+
+  .image-arch.arch-1 {
+    height: 150px;
+  }
+
+  .image-arch.arch-2 {
+    height: 220px;
+  }
+
+  .image-arch.arch-3 {
+    height: 180px;
+  }
+
+  .instruments-section {
+    flex-wrap: wrap;
+  }
+}
