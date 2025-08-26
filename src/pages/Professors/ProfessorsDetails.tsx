@@ -1,11 +1,18 @@
 import { useParams } from 'react-router-dom';
 import './ProfessorsDetails.css';
 import Header from '../../components/Header';
+import ProfessorCard from '../../components/ProfessorCard';
+import ReviewCard from '../../components/ReviewCard';
+import LocationButtons from '../../components/LocationButtons';
+import LearningOutcomes from '../../components/LearningOutcomes';
+import OtherProfessorsGrid from '../../components/OtherProfessorsGrid';
+import CourseIntro from '../../components/CourseIntro';
+import type { Professor, Review, OtherProfessor } from '../../types';
 
 function ProfessorsDetails() {
     const { id } = useParams();
 
-    const professor = {
+    const professor: Professor = {
         name: 'Tatiane Santos',
         rating: 5,
         reviews: 35,
@@ -26,7 +33,7 @@ function ProfessorsDetails() {
         'Construir repertório e confiança para tocar sozinho ou em grupo'
     ];
 
-    const reviews = [
+    const reviews: Review[] = [
         {
             name: 'Tadeuzinho',
             text: 'Excelente experiência com a aula! Melhorei muito minha escuta musical e compreensão. A Tatiane é uma professora incrível e muito paciente.',
@@ -39,10 +46,15 @@ function ProfessorsDetails() {
         }
     ];
 
-    const otherProfessors = [
-        { name: 'João Carlos', rating: 4.8, reviews: 28, price: 'R$75' },
-        { name: 'Ana Beatriz', rating: 4.9, reviews: 42, price: 'R$90' },
-        { name: 'Pedro Santos', rating: 4.7, reviews: 31, price: 'R$80' }
+    const otherProfessors: OtherProfessor[] = [
+        { name: 'João Carlos', rating: 4.8, reviews: 28, price: 'R$75', image: professor.image },
+        { name: 'Ana Beatriz', rating: 4.9, reviews: 42, price: 'R$90', image: professor.image },
+        { name: 'Pedro Santos', rating: 4.7, reviews: 31, price: 'R$80', image: professor.image }
+    ];
+
+    const locations = [
+        '📍 Na casa do professor (Rua Direita da Vitória)',
+        '📹 Online'
     ];
 
     return (
@@ -52,24 +64,14 @@ function ProfessorsDetails() {
                 {/* Coluna Esquerda - Conteúdo Principal */}
                 <div className="left-column">
                     {/* Título e Descrição do Curso */}
-                    <section className="course-intro">
-                        <h1 className="course-title">
-                            Aprenda e evolua rápido na produção musical com acompanhamento técnico especializado, 
-                            comece somente com o seu computador e fones de ouvido. Do zero ao avançado.
-                        </h1>
-                    </section>
+                    <CourseIntro 
+                        title="Aprenda e evolua rápido na produção musical com acompanhamento técnico especializado, comece somente com o seu computador e fones de ouvido. Do zero ao avançado."
+                    />
 
                     {/* Locais das Aulas */}
                     <section className="class-locations">
                         <h2>Locais das aulas</h2>
-                        <div className="location-buttons">
-                            <button className="location-btn">
-                                📍 Na casa do professor (Rua Direita da Vitória)
-                            </button>
-                            <button className="location-btn">
-                                📹 Online
-                            </button>
-                        </div>
+                        <LocationButtons locations={locations} />
                     </section>
 
                     {/* Mais sobre o Professor */}
@@ -91,11 +93,7 @@ function ProfessorsDetails() {
                         <p>A metodologia é personalizada e focada em desbloquear sua musicalidade, organizar a prática e desenvolver a sensibilidade artística. As aulas são práticas e teóricas, com acompanhamento próximo e material exclusivo.</p>
                         
                         <h3>O que você vai aprender?</h3>
-                        <ul className="learning-outcomes">
-                            {learningOutcomes.map((outcome, index) => (
-                                <li key={index}>{outcome}</li>
-                            ))}
-                        </ul>
+                        <LearningOutcomes outcomes={learningOutcomes} />
                     </section>
 
                     {/* Avaliações */}
@@ -103,13 +101,7 @@ function ProfessorsDetails() {
                         <h2>Avaliações</h2>
                         <div className="reviews-list">
                             {reviews.map((review, index) => (
-                                <div key={index} className="review-item">
-                                    <div className="review-avatar">T</div>
-                                    <div className="review-content">
-                                        <h4>{review.name}</h4>
-                                        <p>{review.text}</p>
-                                    </div>
-                                </div>
+                                <ReviewCard key={index} review={review} />
                             ))}
                         </div>
                     </section>
@@ -117,48 +109,13 @@ function ProfessorsDetails() {
                     {/* Mais Professores */}
                     <section className="more-professors">
                         <h2>Mais professores de 'Matéria aplicada'</h2>
-                        <div className="professors-grid">
-                            {otherProfessors.map((prof, index) => (
-                                <div key={index} className="professor-card-small">
-                                    <img src={professor.image} alt={prof.name} />
-                                    <h4>{prof.name}</h4>
-                                    <p>⭐ {prof.rating} ({prof.reviews} Avaliações)</p>
-                                    <p className="price">{prof.price}</p>
-                                </div>
-                            ))}
-                        </div>
+                        <OtherProfessorsGrid professors={otherProfessors} />
                     </section>
                 </div>
 
                 {/* Coluna Direita - Perfil do Professor (Fixa) */}
                 <div className="right-column">
-                    <div className="professor-profile-card">
-                        <img src={professor.image} alt={professor.name} className="professor-image" />
-                        <h3 className="professor-name">{professor.name}</h3>
-                        <div className="rating">
-                            ⭐ {professor.rating} ({professor.reviews} Avaliações)
-                        </div>
-                        
-                        <div className="course-details">
-                            <div className="detail-item">
-                                <span className="label">Valor:</span>
-                                <span className="value">{professor.price}</span>
-                            </div>
-                            <div className="detail-item">
-                                <span className="label">Tempo:</span>
-                                <span className="value">{professor.duration}</span>
-                            </div>
-                            <div className="detail-item">
-                                <span className="label">Alunos:</span>
-                                <span className="value">{professor.students}</span>
-                            </div>
-                        </div>
-
-                        <div className="action-buttons">
-                            <button className="hire-btn">Contratar</button>
-                            <button className="free-class-btn">1a aula grátis</button>
-                        </div>
-                    </div>
+                    <ProfessorCard professor={professor} />
                 </div>
             </div>
 

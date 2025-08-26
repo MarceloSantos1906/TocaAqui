@@ -1,0 +1,21 @@
+.learning-outcomes {
+    list-style: none;
+    padding: 0;
+}
+
+.learning-outcomes li {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #cccccc;
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.learning-outcomes li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #4CAF50;
+    font-weight: bold;
+}

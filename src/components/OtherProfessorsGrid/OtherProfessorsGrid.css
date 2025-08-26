@@ -1,0 +1,47 @@
+.professors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.professor-card-small {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.professor-card-small img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.professor-card-small h4 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0 0 0.5rem 0;
+    color: #ffffff;
+}
+
+.professor-card-small p {
+    font-size: 0.9rem;
+    color: #cccccc;
+    margin: 0.25rem 0;
+}
+
+.professor-card-small .price {
+    font-weight: 500;
+    color: #4CAF50;
+    margin-top: 0.5rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .professors-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+}

@@ -1,0 +1,139 @@
+.professor-profile-card {
+    background-color: #1a1a1a;
+    border-radius: 12px;
+    padding: 2rem;
+    border: 1px solid #333;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+}
+
+.professor-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: block;
+    border: 3px solid #d3d3d3;
+}
+
+.professor-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 1rem 0;
+    color: #ffffff;
+}
+
+.rating {
+    text-align: center;
+    font-size: 1rem;
+    color: #ffd700;
+    margin-bottom: 2rem;
+}
+
+.course-details {
+    margin-bottom: 2rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #333;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-item .label {
+    font-size: 0.9rem;
+    color: #cccccc;
+}
+
+.detail-item .value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.hire-btn {
+    padding: 1rem;
+    background-color: #d3d3d3;
+    color: #121212;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.hire-btn:hover {
+    background-color: #ffffff;
+}
+
+.free-class-btn {
+    padding: 1rem;
+    background-color: transparent;
+    color: #d3d3d3;
+    border: 2px solid #d3d3d3;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.free-class-btn:hover {
+    background-color: #d3d3d3;
+    color: #121212;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .professor-profile-card {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        width: 100%;
+        max-width: 500px;
+    }
+    
+    .professor-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .action-buttons {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    
+    .hire-btn, .free-class-btn {
+        flex: 1;
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .professor-profile-card {
+        padding: 1rem;
+        width: 100%;
+    }
+    
+    .professor-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}

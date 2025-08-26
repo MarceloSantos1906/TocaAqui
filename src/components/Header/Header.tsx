@@ -1,6 +1,6 @@
 import './Header.css';
 import { FaUser } from "react-icons/fa";
-import logo from '../../assets/logo.png';
+import logo from '@/assets/logo.png'
 import { Link } from 'react-router-dom';
 
 function Header() {
