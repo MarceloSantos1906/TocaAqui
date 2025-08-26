@@ -1,0 +1,40 @@
+.professor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-img {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+    padding-left: 15px;
+}
+
+.header-right {
+    display: flex;
+    width: 50%;
+    justify-content: end;
+}
+
+.header-left {
+    display: flex;
+    width: 50%;
+    justify-content: start;
+}
+
+.user-icon {
+    padding-right: 25px;
+}
+
+.user-icon, .logo-img {
+    font-size: 3rem;
+    color: #d3d3d3;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.user-icon:hover {
+    color: #ffffff;
+}

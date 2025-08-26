@@ -7,10 +7,9 @@ import ProfessorsDetails from './pages/Professors/index';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<LoginPage />} />
+      <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/home" element={<HomePage />} />
       <Route path='/professor/:id' element={<ProfessorsDetails />}/>
     </Routes>
   );
