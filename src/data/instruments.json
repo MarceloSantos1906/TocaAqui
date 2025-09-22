@@ -1,0 +1,40 @@
+{
+    "instruments": [
+        {
+            "id": 1,
+            "instrument": "🎹"
+        },
+        {
+            "id": 2,
+            "instrument": "🎤"
+        },
+        {
+            "id": 3,
+            "instrument": "🥁"
+        },
+        {
+            "id": 4,
+            "instrument": "🎸"
+        },
+        {
+            "id": 5,
+            "instrument": "🎷"
+        },
+        {
+            "id": 6,
+            "instrument": "🎻"
+        },
+        {
+            "id": 7,
+            "instrument": "🎼"
+        },
+        {
+            "id": 8,
+            "instrument": "🎺"
+        },
+        {
+            "id": 9,
+            "instrument": "🎶"
+        }
+    ]
+}

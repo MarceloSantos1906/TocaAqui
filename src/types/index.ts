@@ -19,6 +19,7 @@ export interface Review {
 }
 
 export interface OtherProfessor {
+    id: number;
     name: string;
     rating: number;
     reviews: number;

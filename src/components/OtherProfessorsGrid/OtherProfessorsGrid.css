@@ -6,6 +6,16 @@
     margin-bottom: 3rem;
 }
 
+.professor-card-small:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.professor-card-small.faded {
+  opacity: 0.5;
+}
+
 .professor-card-small {
     background-color: #1a1a1a;
     border-radius: 8px;

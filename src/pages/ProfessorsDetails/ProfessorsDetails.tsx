@@ -46,9 +46,9 @@ function ProfessorsDetails() {
     ];
 
     const otherProfessors: OtherProfessor[] = [
-        { name: 'João Carlos', rating: 4.8, reviews: 28, price: 'R$75', image: professor.image },
-        { name: 'Ana Beatriz', rating: 4.9, reviews: 42, price: 'R$90', image: professor.image },
-        { name: 'Pedro Santos', rating: 4.7, reviews: 31, price: 'R$80', image: professor.image }
+        { id: 1, name: 'João Carlos', rating: 4.8, reviews: 28, price: 'R$75', image: professor.image },
+        { id: 2, name: 'Ana Beatriz', rating: 4.9, reviews: 42, price: 'R$90', image: professor.image },
+        { id: 3, name: 'Pedro Santos', rating: 4.7, reviews: 31, price: 'R$80', image: professor.image }
     ];
 
     const locations = [
@@ -60,27 +60,22 @@ function ProfessorsDetails() {
         <div className="professor-details-container">
             <Header />
             <div className="main-content">
-                {/* Coluna Esquerda - Conteúdo Principal */}
                 <div className="left-column">
-                    {/* Título e Descrição do Curso */}
                     <CourseIntro 
                         title="Aprenda e evolua rápido na produção musical com acompanhamento técnico especializado, comece somente com o seu computador e fones de ouvido. Do zero ao avançado."
                     />
 
-                    {/* Locais das Aulas */}
                     <section className="class-locations">
                         <h2>Locais das aulas</h2>
                         <LocationButtons locations={locations} />
                     </section>
 
-                    {/* Mais sobre o Professor */}
                     <section className="about-professor">
                         <h2>Mais sobre {professor.name}</h2>
                         <p>{professor.experience}. {professor.methodology}. {professor.highlights}.</p>
                         <p>Com uma abordagem personalizada e flexível, Tatiane já ajudou mais de 200 alunos a desenvolverem suas habilidades musicais. Sua experiência inclui participação em diversos festivais e eventos culturais, além de colaborações com outros músicos da região.</p>
                     </section>
 
-                    {/* Sobre a Aula */}
                     <section className="about-class">
                         <h2>Sobre a aula</h2>
                         <div className="class-tags">
@@ -95,7 +90,6 @@ function ProfessorsDetails() {
                         <LearningOutcomes outcomes={learningOutcomes} />
                     </section>
 
-                    {/* Avaliações */}
                     <section className="reviews-section">
                         <h2>Avaliações</h2>
                         <div className="reviews-list">
@@ -105,14 +99,12 @@ function ProfessorsDetails() {
                         </div>
                     </section>
 
-                    {/* Mais Professores */}
                     <section className="more-professors">
                         <h2>Mais professores de {professor.matter}</h2>
                         <OtherProfessorsGrid professors={otherProfessors} />
                     </section>
                 </div>
 
-                {/* Coluna Direita - Perfil do Professor (Fixa) */}
                 <div className="right-column">
                     <ProfessorCard professor={professor} />
                 </div>
