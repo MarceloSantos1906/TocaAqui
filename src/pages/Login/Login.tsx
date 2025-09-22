@@ -1,14 +1,62 @@
-import { Link } from "react-router-dom";
-import logo from "../../assets/react.svg";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "@/assets/logo.png";
 import "./Login.css";
+import type { User } from "../../types";
+import { createFakeJWT } from "../../functions/createToken";
+import { Bounce, toast } from "react-toastify";
+
 
 function LoginPage() {
+    const navigate = useNavigate();
+
+    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const usernameInput = (document.getElementById("username") as HTMLInputElement).value;
+        const passwordInput = (document.getElementById("password") as HTMLInputElement).value;
+        const roleInput = (document.querySelector('input[name="role"]:checked') as HTMLInputElement)?.value || "student";
+
+        if (!usernameInput || !passwordInput) {
+            alert("Preencha usuário e senha!");
+            return;
+        }
+
+        const user: User = {
+            id: "123",
+            name: usernameInput,
+            email: `${usernameInput}@teste.com`,
+            role: roleInput,
+        };
+
+        const token = createFakeJWT(user);
+        localStorage.setItem("token", token);
+
+        callToast("Login realizado com sucesso!");
+
+        navigate("/");
+    };
+
+    const callToast = (message: string) => {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+        });
+    }
+
     return (
         <main className="main-container">
             <section className="left-panel">
                 <header className="logo">
-                    <img src={logo} alt="Tocaqui Logo" className="logo-img" />
-                    <h1>TOCAQUI</h1>
+                    <Link to={"/"}>
+                        <img src={logo} alt="Tocaqui Logo" className="logo-img" />
+                    </Link>
                 </header>
                 <div className="slogan">
                     <h2>Conectando músicos e professores na sua região.</h2>
@@ -23,7 +71,7 @@ function LoginPage() {
                     <h2>
                         Você está a um passo de conhecer os melhores professores da região
                     </h2>
-                    <form>
+                    <form onSubmit={handleLogin}>
                         <div className="input-group">
                             <input type="text" id="username" placeholder="Usuário" />
                         </div>

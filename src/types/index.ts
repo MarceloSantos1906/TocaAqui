@@ -9,6 +9,7 @@ export interface Professor {
     experience: string;
     methodology: string;
     highlights: string;
+    matter: string;
 }
 
 export interface Review {
@@ -23,4 +24,11 @@ export interface OtherProfessor {
     reviews: number;
     price: string;
     image: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
 }

@@ -8,6 +8,7 @@ import LearningOutcomes from '../../components/LearningOutcomes';
 import OtherProfessorsGrid from '../../components/OtherProfessorsGrid';
 import CourseIntro from '../../components/CourseIntro';
 import type { Professor, Review, OtherProfessor } from '../../types';
+import professorImage from '@/assets/professora.png'
 
 function ProfessorsDetails() {
     const { id } = useParams();
@@ -19,10 +20,11 @@ function ProfessorsDetails() {
         price: 'R$83',
         duration: '1h',
         students: '50+',
-        image: '/src/assets/react.svg', // Placeholder - substitua pela imagem real
+        image: professorImage,
         experience: '12+ anos como professora de teclado, 20+ anos como musicista',
         methodology: 'Personalizada e flexível, ajudou mais de 200 alunos',
-        highlights: 'Festivais, eventos culturais, colaborações'
+        highlights: 'Festivais, eventos culturais, colaborações',
+        matter: 'Teclado'
     };
 
     const learningOutcomes = [
@@ -108,7 +110,7 @@ function ProfessorsDetails() {
 
                     {/* Mais Professores */}
                     <section className="more-professors">
-                        <h2>Mais professores de 'Matéria aplicada'</h2>
+                        <h2>Mais professores de {professor.matter}</h2>
                         <OtherProfessorsGrid professors={otherProfessors} />
                     </section>
                 </div>
