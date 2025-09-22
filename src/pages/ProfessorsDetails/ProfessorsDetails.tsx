@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import './ProfessorsDetails.css';
 import Header from '../../components/Header';
 import ProfessorCard from '../../components/ProfessorCard';
@@ -11,8 +10,6 @@ import type { Professor, Review, OtherProfessor } from '../../types';
 import professorImage from '@/assets/professora.png'
 
 function ProfessorsDetails() {
-    const { id } = useParams();
-
     const professor: Professor = {
         name: 'Tatiane Santos',
         rating: 5,
