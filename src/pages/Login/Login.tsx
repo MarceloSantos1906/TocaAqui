@@ -1,43 +1,58 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, type NavigateFunction } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import "./Login.css";
 import type { User } from "../../types";
 import { createFakeJWT } from "../../functions/createToken";
 import { Bounce, toast } from "react-toastify";
+import { z } from "zod";
 
+const loginSchema = z.object({
+    username: z.string().min(3, "Por favor, insira um nome de usuário válido"),
+    password: z.string().min(6, "Por favor, insira uma senha com no mínimo 6 caracteres"),
+    role: z.string().default("student"),
+});
 
 function LoginPage() {
-    const navigate = useNavigate();
+    const navigate: NavigateFunction = useNavigate();
 
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin: (e: React.FormEvent<HTMLFormElement>) => void = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const usernameInput = (document.getElementById("username") as HTMLInputElement).value;
-        const passwordInput = (document.getElementById("password") as HTMLInputElement).value;
-        const roleInput = (document.querySelector('input[name="role"]:checked') as HTMLInputElement)?.value || "student";
+        const usernameInput: string = (document.getElementById("username") as HTMLInputElement).value;
+        const passwordInput: string = (document.getElementById("password") as HTMLInputElement).value;
+        const roleInput: string =
+            (document.querySelector('input[name="role"]:checked') as HTMLInputElement)?.value || "student";
 
-        if (!usernameInput || !passwordInput) {
-            alert("Preencha usuário e senha!");
+        const result = loginSchema.safeParse({
+            username: usernameInput,
+            password: passwordInput,
+            role: roleInput,
+        });
+
+        if (!result.success) {
+            result.error.issues.forEach((issue) => {
+                callToast(issue.message, "error");
+            });
             return;
         }
 
         const user: User = {
             id: "123",
-            name: usernameInput,
-            email: `${usernameInput}@teste.com`,
-            role: roleInput,
+            name: result.data.username,
+            email: `${result.data.username}@teste.com`,
+            role: result.data.role,
         };
 
-        const token = createFakeJWT(user);
+        const token: string = createFakeJWT(user);
         localStorage.setItem("token", token);
 
-        callToast("Login realizado com sucesso!");
+        callToast("Login realizado com sucesso!", "success");
 
         navigate("/");
     };
 
-    const callToast = (message: string) => {
-        toast.success(message, {
+    const callToast = (message: string, type: "success" | "error" = "success") => {
+        toast[type](message, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -48,7 +63,7 @@ function LoginPage() {
             theme: "dark",
             transition: Bounce,
         });
-    }
+    };
 
     return (
         <main className="main-container">
@@ -68,15 +83,27 @@ function LoginPage() {
 
             <section className="right-panel">
                 <div className="login-form">
-                    <h2>
-                        Você está a um passo de conhecer os melhores professores da região
-                    </h2>
+                    <h2>Você está a um passo de conhecer os melhores professores da região</h2>
                     <form onSubmit={handleLogin}>
                         <div className="input-group">
-                            <input type="text" id="username" placeholder="Usuário" />
+                            <input
+                                type="text"
+                                id="username"
+                                placeholder="Usuário"
+                                required
+                                onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe seu usuario.")}
+                                onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+                            />
                         </div>
                         <div className="input-group">
-                            <input type="password" id="password" placeholder="Senha" />
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="Senha"
+                                required
+                                onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe sua senha.")}
+                                onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+                            />
                         </div>
                         <div className="remember-me">
                             <input type="checkbox" id="remember" />

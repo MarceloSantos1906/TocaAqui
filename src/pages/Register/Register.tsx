@@ -1,51 +1,71 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, type NavigateFunction } from 'react-router-dom';
 import logo from "@/assets/logo.png";
 import './Register.css';
 import type { User } from '../../types';
 import { createFakeJWT } from '../../functions/createToken';
 import { Bounce, toast } from 'react-toastify';
+import { z } from "zod";
+import { validateCPF } from '../../functions/validateCPF';
+
+const registerSchema = z.object({
+  name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
+  email: z.string().email("E-mail inválido"),
+  cpf: z.string().refine(validateCPF, { message: "CPF inválido" }),
+  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
+  repeatPassword: z.string(),
+  role: z.string(),
+}).refine((data) => data.password === data.repeatPassword, {
+  message: "As senhas não conferem",
+  path: ["repeatPassword"],
+});
 
 function RegisterPage() {
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
 
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister: (e: React.FormEvent<HTMLFormElement>) => void = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const form = e.currentTarget;
-    const name = (form.querySelector('input[placeholder="Nome"]') as HTMLInputElement).value;
-    const email = (form.querySelector('input[placeholder="Email"]') as HTMLInputElement).value;
-    const cpf = (form.querySelector('input[placeholder="CPF"]') as HTMLInputElement).value;
-    const password = (form.querySelector('input[placeholder="Senha"]') as HTMLInputElement).value;
-    const repeatPassword = (form.querySelector('input[placeholder="Repita sua senha"]') as HTMLInputElement).value;
-    const role = (form.querySelector('input[name="role"]:checked') as HTMLInputElement).value;
+    const form: EventTarget & HTMLFormElement = e.currentTarget;
+    const name: string = (form.querySelector('input[placeholder="Nome"]') as HTMLInputElement).value;
+    const email: string = (form.querySelector('input[placeholder="Email"]') as HTMLInputElement).value;
+    const cpf: string = (form.querySelector('input[placeholder="CPF"]') as HTMLInputElement).value;
+    const password: string = (form.querySelector('input[placeholder="Senha"]') as HTMLInputElement).value;
+    const repeatPassword: string = (form.querySelector('input[placeholder="Repita sua senha"]') as HTMLInputElement).value;
+    const role: string = (form.querySelector('input[name="role"]:checked') as HTMLInputElement).value;
 
-    if (!name || !email || !cpf || !password || !repeatPassword) {
-      alert("Preencha todos os campos!");
-      return;
-    }
+    const result = registerSchema.safeParse({
+      name,
+      email,
+      cpf,
+      password,
+      repeatPassword,
+      role,
+    });
 
-    if (password !== repeatPassword) {
-      alert("As senhas não conferem!");
+    if (!result.success) {
+      result.error.issues.forEach((issue) => {
+        callToast(issue.message, "error");
+      });
       return;
     }
 
     const user: User = {
       id: "123",
-      name,
-      email,
-      role,
+      name: result.data.name,
+      email: result.data.email,
+      role: result.data.role,
     };
 
-    const token = createFakeJWT(user);
+    const token: string = createFakeJWT(user);
     localStorage.setItem("token", token);
 
-    callToast(`Olá ${user.name}, cadastro realizado com sucesso!`);
+    callToast(`Olá ${user.name}, cadastro realizado com sucesso!`, "success");
 
     navigate("/");
   };
 
-  const callToast = (message: string) => {
-    toast.success(message, {
+  const callToast = (message: string, type: "success" | "error" = "success") => {
+    toast[type](message, {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -56,7 +76,7 @@ function RegisterPage() {
       theme: "dark",
       transition: Bounce,
     });
-  }
+  };
 
   return (
     <main className="main-container">
@@ -79,21 +99,51 @@ function RegisterPage() {
           <h2>Você está a um passo de conhecer os melhores professores da região</h2>
           <form onSubmit={handleRegister}>
             <div className="input-group">
-              <input type="text" placeholder="Nome" />
+              <input
+                type="text"
+                placeholder="Nome"
+                required
+                onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe seu nome.")}
+                onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+              />
             </div>
             <div className="input-group">
-              <input type="email" placeholder="Email" />
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe um e-mail válido.")}
+                onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+              />
             </div>
             <div className="input-group">
-              <input type="text" placeholder="CPF" />
+              <input
+                type="text"
+                placeholder="CPF"
+                required
+                onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe seu cpf.")}
+                onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+              />
             </div>
 
             <div className="input-row">
               <div className="input-group">
-                <input type="password" placeholder="Senha" />
+                <input
+                  type="password"
+                  placeholder="Senha"
+                  required
+                  onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe sua senha.")}
+                  onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+                />
               </div>
               <div className="input-group">
-                <input type="password" placeholder="Repita sua senha" />
+                <input
+                  type="password"
+                  placeholder="Repita sua senha"
+                  required
+                  onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, repita sua senha.")}
+                  onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+                />
               </div>
             </div>
 
@@ -109,7 +159,7 @@ function RegisterPage() {
             </div>
 
             <div className="form-actions">
-              <Link to="/login" className="create-account">Realizar login</Link>
+              <Link to="/login" className="create-account">Já possui conta? Realizar login!</Link>
               <button type="submit" className="login-button">
                 Criar conta
               </button>
