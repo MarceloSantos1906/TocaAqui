@@ -9,8 +9,10 @@ import { validateCPF } from '../../functions/validateCPF';
 
 const registerSchema = z.object({
   name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
-  email: z.string().email("E-mail inválido"),
+  email: z.email("E-mail inválido"),
+  mobileNumber: z.string().min(10, "Número de telefone inválido").max(15, "Número de telefone inválido"),
   cpf: z.string().refine(validateCPF, { message: "CPF inválido" }),
+  profilePicture: z.url("URL de imagem inválida").optional().or(z.literal("")),
   password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
   repeatPassword: z.string(),
   role: z.string(),
@@ -22,13 +24,15 @@ const registerSchema = z.object({
 function RegisterPage() {
   const navigate: NavigateFunction = useNavigate();
 
-  const handleRegister: (e: React.FormEvent<HTMLFormElement>) => void = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister: (e: React.FormEvent<HTMLFormElement>) => void = async (e) => {
     e.preventDefault();
 
     const form: EventTarget & HTMLFormElement = e.currentTarget;
     const name: string = (form.querySelector('input[placeholder="Nome"]') as HTMLInputElement).value;
     const email: string = (form.querySelector('input[placeholder="Email"]') as HTMLInputElement).value;
+    const mobileNumber: string = (form.querySelector('input[placeholder="Mobile Number"]') as HTMLInputElement).value;
     const cpf: string = (form.querySelector('input[placeholder="CPF"]') as HTMLInputElement).value;
+    const profilePicture: string = (form.querySelector('input[placeholder="https://picsum.photos/300"]') as HTMLInputElement).value;
     const password: string = (form.querySelector('input[placeholder="Senha"]') as HTMLInputElement).value;
     const repeatPassword: string = (form.querySelector('input[placeholder="Repita sua senha"]') as HTMLInputElement).value;
     const role: string = (form.querySelector('input[name="role"]:checked') as HTMLInputElement).value;
@@ -36,7 +40,9 @@ function RegisterPage() {
     const result = registerSchema.safeParse({
       name,
       email,
+      mobileNumber,
       cpf,
+      profilePicture,
       password,
       repeatPassword,
       role,
@@ -49,19 +55,36 @@ function RegisterPage() {
       return;
     }
 
-    const user: User = {
-      id: "123",
-      name: result.data.name,
-      email: result.data.email,
-      role: result.data.role,
-    };
+    try {
+      const response = await fetch("/api/person/create-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: result.data.name,
+          email: result.data.email,
+          mobileNumber: result.data.mobileNumber,
+          cpf: result.data.cpf,
+          profilePicture: result.data.profilePicture,
+          password: result.data.password,
+          authority: result.data.role
+        }),
+      });
 
-    const token: string = createFakeJWT(user);
-    localStorage.setItem("token", token);
+      if (!response.ok) {
+        const errorData = await response.json();
+        callToast(errorData.message || "Erro ao fazer login", "error");
+        return;
+      }
 
-    callToast(`Olá ${user.name}, cadastro realizado com sucesso!`, "success");
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
 
-    navigate("/");
+      callToast("Login realizado com sucesso!", "success");
+      navigate("/");
+    } catch (error) {
+      callToast("Erro de conexão com o servidor", "error");
+      console.error("Login error:", error);
+    }
   };
 
   const callToast = (message: string, type: "success" | "error" = "success") => {
@@ -119,9 +142,26 @@ function RegisterPage() {
             <div className="input-group">
               <input
                 type="text"
+                placeholder="Mobile Number"
+                required
+                onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe seu telefone.")}
+                onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+              />
+            </div>
+            <div className="input-group">
+              <input
+                type="text"
                 placeholder="CPF"
                 required
                 onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe seu cpf.")}
+                onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+              />
+            </div>
+            <div className="input-group">
+              <input
+                type="url"
+                placeholder="https://picsum.photos/300"
+                onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe uma URL de imagem válida.")}
                 onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
               />
             </div>
@@ -149,11 +189,11 @@ function RegisterPage() {
 
             <div className="role-selection">
               <div className="radio-option">
-                <input type="radio" id="professor" name="role" value="professor" defaultChecked />
+                <input type="radio" id="professor" name="role" value="Professor" defaultChecked />
                 <label htmlFor="professor">Professor</label>
               </div>
               <div className="radio-option">
-                <input type="radio" id="aluno" name="role" value="aluno" />
+                <input type="radio" id="aluno" name="role" value="Estudante" />
                 <label htmlFor="aluno">Aluno</label>
               </div>
             </div>
