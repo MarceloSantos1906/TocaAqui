@@ -32,13 +32,6 @@ function ProfessorsDetails() {
         'Sexta-feira'
     ];
 
-    const times = [
-        '10:00',
-        '14:00',
-        '16:00',
-        '18:00'
-    ];
-
     return (
         <div className="professor-details-container">
             <Header />
@@ -51,7 +44,7 @@ function ProfessorsDetails() {
 
                     <section className="class-date-time">
                         <h2>Selecione uma data e hora para suas aulas</h2>
-                        <ClassDateTime dates={dates} times={times} />
+                        <ClassDateTime dates={dates}} />
                     </section>
                 </div>
 
