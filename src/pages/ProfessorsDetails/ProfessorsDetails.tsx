@@ -45,12 +45,6 @@ function ProfessorsDetails() {
         }
     ];
 
-    const otherProfessors: OtherProfessor[] = [
-        { id: 1, name: 'João Carlos', rating: 4.8, reviews: 28, price: 'R$75', image: professor.image },
-        { id: 2, name: 'Ana Beatriz', rating: 4.9, reviews: 42, price: 'R$90', image: professor.image },
-        { id: 3, name: 'Pedro Santos', rating: 4.7, reviews: 31, price: 'R$80', image: professor.image }
-    ];
-
     const locations = [
         '📍 Na casa do professor (Rua Direita da Vitória)',
         '📹 Online'
@@ -97,11 +91,6 @@ function ProfessorsDetails() {
                                 <ReviewCard key={index} review={review} />
                             ))}
                         </div>
-                    </section>
-
-                    <section className="more-professors">
-                        <h2>Mais professores de {professor.matter}</h2>
-                        <OtherProfessorsGrid professors={otherProfessors} />
                     </section>
                 </div>
 
