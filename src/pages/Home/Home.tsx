@@ -7,7 +7,6 @@ import './Home.css';
 import Header from '../../components/Header';
 import { useEffect, useState } from 'react';
 import professorsJson from '../../data/professors.json'
-import instrumentsJson from '../../data/instruments.json'
 
 interface professors {
     id: number;
@@ -16,23 +15,37 @@ interface professors {
     location: string;
 }
 
-interface instruments {
-    id: number;
-    instrument: string;
+interface Instrument {
+    id: string;
+    name: string;
+    description: string;
+    courseCategory: any[];
+    logoUrl: string;
 }
-
-const professors: professors[] = professorsJson.professors;
-const instruments: instruments[] = instrumentsJson.instruments;
 
 function HomePage() {
     const [limit, setLimit] = useState(6);
     const [search, setSearch] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
+    const [instruments, setInstruments] = useState<Instrument[]>([]);
 
     useEffect(() => {
         const cityParam = searchParams.get("cidade") || "";
         setSearch(cityParam);
     }, [searchParams]);
+
+    useEffect(() => {
+        async function fetchInstruments() {
+            try {
+                const response = await fetch("/api/categories/find-all", { method: "GET" });
+                const data = await response.json();
+                setInstruments(data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        }
+        fetchInstruments();
+    }, []);
 
     const handleSearch = (param: string) => {
         setSearch(param);
@@ -45,6 +58,8 @@ function HomePage() {
         }
         setSearchParams(newParams);
     };
+
+const professors: professors[] = professorsJson.professors;
 
     return (
         <div className='container'>
@@ -90,15 +105,12 @@ function HomePage() {
                     </section>
 
                     <section className="instruments-section">
-                        {
-                            instruments.map((instrument, index) => {
-                                return (
-                                    <Link to={'/'} className='instrument-link' key={index}>
-                                        <div className="instrument-icon" key={index}>{instrument.instrument}</div>
-                                    </Link>
-                                )
-                            })
-                        }
+                        {instruments.map((instrument, index) => (
+                            <Link to={'/'} className='instrument-link' key={instrument.id}>
+                                <div className="instrument-icon">{instrument.name}</div>
+                                <img src={instrument.logoUrl} alt={instrument.name} />
+                            </Link>
+                        ))}
                     </section>
 
                     <section className="professors-section">
