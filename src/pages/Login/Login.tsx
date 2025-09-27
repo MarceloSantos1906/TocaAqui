@@ -15,8 +15,8 @@ const loginSchema = z.object({
 function LoginPage() {
     const navigate: NavigateFunction = useNavigate();
 
-    const handleLogin: (e: React.FormEvent<HTMLFormElement>) => void = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleLogin: (e: React.FormEvent<HTMLFormElement>) => void = async (e) => {
+    e.preventDefault();
 
         const usernameInput: string = (document.getElementById("username") as HTMLInputElement).value;
         const passwordInput: string = (document.getElementById("password") as HTMLInputElement).value;
@@ -36,20 +36,32 @@ function LoginPage() {
             return;
         }
 
-        const user: User = {
-            id: "123",
-            name: result.data.username,
-            email: `${result.data.username}@teste.com`,
-            role: result.data.role,
+        try {
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    cpf: result.data.username,
+                    password: result.data.password
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                callToast(errorData.message || "Erro ao fazer login", "error");
+                return;
+            }
+
+            const data = await response.json();
+            localStorage.setItem("token", data.token);
+
+            callToast("Login realizado com sucesso!", "success");
+            navigate("/");
+        } catch (error) {
+            callToast("Erro de conexão com o servidor", "error");
+            console.error("Login error:", error);
+            }
         };
-
-        const token: string = createFakeJWT(user);
-        localStorage.setItem("token", token);
-
-        callToast("Login realizado com sucesso!", "success");
-
-        navigate("/");
-    };
 
     const callToast = (message: string, type: "success" | "error" = "success") => {
         toast[type](message, {
