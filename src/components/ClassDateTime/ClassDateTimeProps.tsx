@@ -2,10 +2,9 @@ import './ClassDateTimeProps.css';
 
 interface ClassDateTimeProps {
     dates: string[];
-    times: string[];
 }
 
-function ClassDateTime({ dates, times }: ClassDateTimeProps) {
+function ClassDateTime({ dates }: ClassDateTimeProps) {
     return (
         <div className="dates">
             {dates.map((date, dateIndex) => (
@@ -17,17 +16,6 @@ function ClassDateTime({ dates, times }: ClassDateTimeProps) {
                         id={`date-${dateIndex}`}
                     />
                     <label htmlFor={`date-${dateIndex}`}>{date}</label>
-                    {times.map((time, timeIndex) => (
-                        <div key={`time-${dateIndex}-${timeIndex}`}>
-                            <input
-                                type="checkbox"
-                                name={`time-${dateIndex}-${timeIndex}`}
-                                value={time}
-                                id={`time-${dateIndex}-${timeIndex}`}
-                            />
-                            <label htmlFor={`time-${dateIndex}-${timeIndex}`}>{time}</label>
-                        </div>
-                    ))}
                 </div>
             ))}
         </div>
