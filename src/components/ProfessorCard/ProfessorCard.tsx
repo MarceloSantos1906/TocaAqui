@@ -1,5 +1,5 @@
-import { Bounce, toast } from 'react-toastify';
 import type { Professor } from '../../types';
+import { useNavigate } from 'react-router-dom';
 import './ProfessorCard.css';
 
 interface ProfessorCardProps {
@@ -7,20 +7,11 @@ interface ProfessorCardProps {
 }
 
 function ProfessorCard({ professor }: ProfessorCardProps) {
+    const navigate = useNavigate();
 
     const contractProfessor = () => {
-        toast.info('Ainda não implementamos essa funcionalidade!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: false,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-        });
-    }
+        navigate(`/professor/${professor.id}/schedule`);
+    };
 
     return (
         <div className="professor-profile-card">
