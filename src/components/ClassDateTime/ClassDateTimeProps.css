@@ -1,0 +1,19 @@
+.dates {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .location-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .location-btn {
+        min-width: auto;
+        width: 100%;
+        max-width: 400px;
+    }
+}
