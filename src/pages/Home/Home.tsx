@@ -59,7 +59,7 @@ function HomePage() {
         setSearchParams(newParams);
     };
 
-const professors: professors[] = professorsJson.professors;
+    const professors: professors[] = professorsJson.professors;
 
     return (
         <div className='container'>
@@ -106,9 +106,14 @@ const professors: professors[] = professorsJson.professors;
 
                     <section className="instruments-section">
                         {instruments.map((instrument, index) => (
-                            <Link to={'/'} className='instrument-link' key={instrument.id}>
-                                <div className="instrument-icon">{instrument.name}</div>
-                                <img src={instrument.logoUrl} alt={instrument.name} />
+                            <Link to={'/'} 
+                            className='instrument-link' 
+                            key={instrument.id}
+                            title={instrument.description}
+                            >
+                                <div className="instrument-icon">
+                                    <img src={instrument.logoUrl} alt={instrument.name} />
+                                </div>
                             </Link>
                         ))}
                     </section>
