@@ -143,6 +143,10 @@
   font-size: 1.5rem;
 }
 
+.instrument-icon img {
+  width: 70%;
+}
+
 .professor-link,.instrument-link {
   text-decoration: none;
   list-style: none;
