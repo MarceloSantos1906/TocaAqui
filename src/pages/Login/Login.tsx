@@ -1,8 +1,6 @@
 import { Link, useNavigate, type NavigateFunction } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import "./Login.css";
-import type { User } from "../../types";
-import { createFakeJWT } from "../../functions/createToken";
 import { Bounce, toast } from "react-toastify";
 import { z } from "zod";
 
@@ -59,7 +57,7 @@ function LoginPage() {
             navigate("/");
         } catch (error) {
             callToast("Erro de conexão com o servidor", "error");
-            console.error("Login error:", error);
+                console.error("Login error:", error);
             }
         };
 
@@ -95,7 +93,7 @@ function LoginPage() {
 
             <section className="right-panel">
                 <div className="login-form">
-                    <h2>Você está a um passo de conhecer os melhores professores da região</h2>
+                    <h2 className="text-white">Você está a um passo de conhecer os melhores professores da região</h2>
                     <form onSubmit={handleLogin}>
                         <div className="input-group">
                             <input
