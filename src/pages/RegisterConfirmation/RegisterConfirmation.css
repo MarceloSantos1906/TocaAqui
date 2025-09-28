@@ -1,0 +1,100 @@
+.main-container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem;
+  background-color: #212121;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.left-panel,
+.right-panel {
+  padding: 4rem;
+  flex: 1;
+}
+
+.left-panel {
+  background-color: #282828;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  color: #b3b3b3;
+}
+
+.logo-img {
+  width: auto;
+  height: 150px;
+  margin-bottom: 0.5rem;
+}
+
+.email-instruction {
+  margin: auto 0;
+}
+
+.email-instruction h2 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.footer-text p {
+  font-size: 0.8rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.create-account {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+.login-button {
+  padding: 0.8rem 2.5rem;
+  background-color: #d3d3d3;
+  color: #121212;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #ffffff;
+}
+
+.back-to-login {
+  text-decoration: none;
+  border-bottom: 1px solid #b3b3b3;
+}
+
+@media (max-width: 900px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+    padding: 2rem;
+  }
+
+  .slogan h2 {
+    font-size: 2rem;
+    margin-top: 2rem;
+  }
+
+  .login-form h2 {
+    font-size: 1.5rem;
+  }
+}
