@@ -1,17 +1,19 @@
 import { Link, useNavigate, type NavigateFunction } from 'react-router-dom';
 import logo from "@/assets/logo.png";
 import './Register.css';
-import type { User } from '../../types';
-import { createFakeJWT } from '../../functions/createToken';
 import { Bounce, toast } from 'react-toastify';
 import { z } from "zod";
 import { validateCPF } from '../../functions/validateCPF';
 
+function removeNonDigits(text: string): string {
+  return text.replace(/\D+/g, '');
+}
+
 const registerSchema = z.object({
   name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres"),
   email: z.email("E-mail inválido"),
-  mobileNumber: z.string().min(10, "Número de telefone inválido").max(15, "Número de telefone inválido"),
-  cpf: z.string().refine(validateCPF, { message: "CPF inválido" }),
+  mobileNumber: z.string().min(10, "Número de telefone inválido").max(15, "Número de telefone inválido").transform(removeNonDigits),
+  cpf: z.string().transform(removeNonDigits).refine(validateCPF, { message: "CPF inválido" }),
   profilePicture: z.url("URL de imagem inválida").optional().or(z.literal("")),
   password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
   repeatPassword: z.string(),
@@ -119,7 +121,7 @@ function RegisterPage() {
 
       <section className="right-panel">
         <div className="login-form">
-          <h2>Você está a um passo de conhecer os melhores professores da região</h2>
+          <h2 className="text-white">Você está a um passo de conhecer os melhores professores da região</h2>
           <form onSubmit={handleRegister}>
             <div className="input-group">
               <input
