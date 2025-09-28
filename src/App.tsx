@@ -7,14 +7,14 @@ import { ToastContainer } from 'react-toastify';
 import ScheduleProfessor from './pages/ScheduleProfessor/index';
 import Payment from './pages/Payment/index';
 import RegisterConfirmation from './pages/RegisterConfirmation';
-import { RegisterProvider } from '@/context/RegisterContext';
+import { RegisterProvider } from './context/RegisterContext';
 
 function App() {
     return (
         <RegisterProvider>
             <>
                 <Routes>
-                    <Route path="/registerconfirmation" element={<RegisterConfirmation />} />
+                    <Route path="/register-confirmation" element={<RegisterConfirmation />} />
                     <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />

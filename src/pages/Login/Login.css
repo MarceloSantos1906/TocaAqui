@@ -15,6 +15,10 @@
   flex: 1;
 }
 
+.error{
+  color: #ddd;
+}
+
 .left-panel {
   background-color: #282828;
   display: flex;

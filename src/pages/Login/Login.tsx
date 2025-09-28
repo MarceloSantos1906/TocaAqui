@@ -1,48 +1,56 @@
 import { Link, useNavigate, type NavigateFunction } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import "./Login.css";
-import type { User } from "../../types";
-import { createFakeJWT } from "../../functions/createToken";
 import { Bounce, toast } from "react-toastify";
 import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { formatCPF } from "../../common/functions/FormatCPF";
 
 const loginSchema = z.object({
-    username: z.string().min(3, "Por favor, insira um nome de usuário válido"),
-    password: z.string().min(6, "Por favor, insira uma senha com no mínimo 6 caracteres"),
-    role: z.string().default("student"),
+    username: z
+        .string()
+        .min(11, "Por favor, insira um CPF válido")
+        .max(14, "CPF inválido"),
+    password: z
+        .string()
+        .min(6, "Por favor, insira uma senha com no mínimo 6 caracteres"),
+    role: z.string()
 });
+
+interface LoginResponseInterface {
+    message: string;
+    token: string
+}
+
+type LoginForm = z.infer<typeof loginSchema>;
 
 function LoginPage() {
     const navigate: NavigateFunction = useNavigate();
 
-    const handleLogin: (e: React.FormEvent<HTMLFormElement>) => void = async (e) => {
-    e.preventDefault();
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        formState: { errors, isSubmitting, isValid },
+    } = useForm<LoginForm>({
+        resolver: zodResolver(loginSchema),
+        mode: "onChange",
+        defaultValues: {
+            username: "",
+            password: "",
+            role: "student",
+        },
+    });
 
-        const usernameInput: string = (document.getElementById("username") as HTMLInputElement).value;
-        const passwordInput: string = (document.getElementById("password") as HTMLInputElement).value;
-        const roleInput: string =
-            (document.querySelector('input[name="role"]:checked') as HTMLInputElement)?.value || "student";
-
-        const result = loginSchema.safeParse({
-            username: usernameInput,
-            password: passwordInput,
-            role: roleInput,
-        });
-
-        if (!result.success) {
-            result.error.issues.forEach((issue) => {
-                callToast(issue.message, "error");
-            });
-            return;
-        }
-
+    const onSubmit = async (data: LoginForm) => {
         try {
-            const response = await fetch("/api/auth/login", {
+            const response: Response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    cpf: result.data.username,
-                    password: result.data.password
+                    cpf: data.username.replace(/\D/g, ""),
+                    password: data.password,
                 }),
             });
 
@@ -52,16 +60,17 @@ function LoginPage() {
                 return;
             }
 
-            const data = await response.json();
-            localStorage.setItem("token", data.token);
+            const result: LoginResponseInterface = await response.json();
 
-            callToast("Login realizado com sucesso!", "success");
+            localStorage.setItem("token", result.token);
+
+            callToast(result.message, "success");
             navigate("/");
         } catch (error) {
             callToast("Erro de conexão com o servidor", "error");
             console.error("Login error:", error);
-            }
-        };
+        }
+    };
 
     const callToast = (message: string, type: "success" | "error" = "success") => {
         toast[type](message, {
@@ -96,37 +105,42 @@ function LoginPage() {
             <section className="right-panel">
                 <div className="login-form">
                     <h2>Você está a um passo de conhecer os melhores professores da região</h2>
-                    <form onSubmit={handleLogin}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        {/* CPF */}
                         <div className="input-group">
                             <input
                                 type="text"
-                                id="username"
-                                placeholder="Usuário"
-                                required
-                                onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe seu usuario.")}
-                                onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+                                placeholder="Digite seu CPF"
+                                maxLength={14}
+                                {...register("username")}
+                                onChange={(e) => setValue("username", formatCPF(e.target.value), { shouldValidate: true })}
                             />
+                            {errors.username && <p className="error">{errors.username.message}</p>}
                         </div>
+
+                        {/* Senha */}
                         <div className="input-group">
                             <input
                                 type="password"
-                                id="password"
-                                placeholder="Senha"
-                                required
-                                onInvalid={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("Por favor, informe sua senha.")}
-                                onInput={(e) => (e.currentTarget as HTMLInputElement).setCustomValidity("")}
+                                placeholder="Digite sua senha"
+                                {...register("password")}
                             />
+                            {errors.password && <p className="error">{errors.password.message}</p>}
                         </div>
+
+                        {/* Lembrar */}
                         <div className="remember-me">
                             <input type="checkbox" id="remember" />
                             <label htmlFor="remember">Mantenha-me conectado</label>
                         </div>
+
+                        {/* Ações */}
                         <div className="form-actions">
                             <Link to="/register" className="create-account">
                                 Novo por aqui? Crie sua conta!
                             </Link>
-                            <button type="submit" className="login-button">
-                                Entrar
+                            <button type="submit" className="login-button" disabled={!isValid || isSubmitting}>
+                                {isSubmitting ? "Entrando..." : "Entrar"}
                             </button>
                         </div>
                     </form>

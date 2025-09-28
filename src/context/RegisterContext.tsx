@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 interface RegisterContextType {
     cpf: string;
@@ -9,6 +9,7 @@ const RegisterContext = createContext<RegisterContextType | undefined>(undefined
 
 export function RegisterProvider({ children }: { children: ReactNode }) {
     const [cpf, setCpf] = useState("");
+
     return (
         <RegisterContext.Provider value={{ cpf, setCpf }}>
             {children}
