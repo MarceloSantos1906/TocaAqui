@@ -7,22 +7,25 @@ import { ToastContainer } from 'react-toastify';
 import ScheduleProfessor from './pages/ScheduleProfessor/index';
 import Payment from './pages/Payment/index';
 import RegisterConfirmation from './pages/RegisterConfirmation';
+import { RegisterProvider } from '@/context/RegisterContext';
 
 function App() {
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/professor/:id" element={<ProfessorsDetails />} />
-        <Route path="/professor/:id/schedule" element={<ScheduleProfessor />} />
-        <Route path="/professor/:id/schedule/payment" element={<Payment />} />
-        <Route path="/registerconfirmation" element={<RegisterConfirmation />} />
-      </Routes>
-      <ToastContainer />
-    </>
-  );
+    return (
+        <RegisterProvider>
+            <>
+                <Routes>
+                    <Route path="/registerconfirmation" element={<RegisterConfirmation />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/professor/:id" element={<ProfessorsDetails />} />
+                    <Route path="/professor/:id/schedule" element={<ScheduleProfessor />} />
+                    <Route path="/professor/:id/schedule/payment" element={<Payment />} />
+                </Routes>
+                <ToastContainer />
+            </>
+        </RegisterProvider>
+    );
 }
 
 export default App;
