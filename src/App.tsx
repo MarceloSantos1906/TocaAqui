@@ -6,6 +6,7 @@ import ProfessorsDetails from './pages/ProfessorsDetails/index';
 import { ToastContainer } from 'react-toastify';
 import ScheduleProfessor from './pages/ScheduleProfessor/index';
 import Payment from './pages/Payment/index';
+import RegisterConfirmation from './pages/RegisterConfirmation';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/professor/:id" element={<ProfessorsDetails />} />
         <Route path="/professor/:id/schedule" element={<ScheduleProfessor />} />
         <Route path="/professor/:id/schedule/payment" element={<Payment />} />
+        <Route path="/registerconfirmation" element={<RegisterConfirmation />} />
       </Routes>
       <ToastContainer />
     </>
