@@ -44,7 +44,7 @@ function ProfessorsDetails() {
 
                     <section className="class-date-time">
                         <h2>Selecione uma data e hora para suas aulas</h2>
-                        <ClassDateTime dates={dates}} />
+                        <ClassDateTime dates={dates} />
                     </section>
                 </div>
 
