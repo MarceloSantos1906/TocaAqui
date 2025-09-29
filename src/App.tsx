@@ -8,6 +8,7 @@ import ScheduleProfessor from './pages/ScheduleProfessor/index';
 import Payment from './pages/Payment/index';
 import RegisterConfirmation from './pages/RegisterConfirmation';
 import { RegisterProvider } from './context/RegisterContext';
+import ProfilePage from './pages/Profile';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route path='/profile' element={<ProfilePage />} />
                     <Route path="/professor/:id" element={<ProfessorsDetails />} />
                     <Route path="/professor/:id/schedule" element={<ScheduleProfessor />} />
                     <Route path="/professor/:id/schedule/payment" element={<Payment />} />

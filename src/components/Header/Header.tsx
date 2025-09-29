@@ -1,7 +1,7 @@
 import './Header.css';
 import { FaUser } from "react-icons/fa";
 import logo from '@/assets/logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
@@ -13,6 +13,7 @@ interface User {
 }
 
 function Header() {
+    const navigate = useNavigate();
     const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
     const [openDropdown, setOpenDropdown] = useState<boolean>(false);
@@ -41,6 +42,19 @@ function Header() {
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setToken(null);
+        setUser(null);
+        setOpenDropdown(false);
+        navigate("/"); // opcional: redireciona para home
+    };
+
+    const goToProfile = () => {
+        navigate("/minhas-informacoes"); // rota da página de perfil
+        setOpenDropdown(false);
+    };
 
     return (
         <header className="professor-header">
@@ -71,15 +85,9 @@ function Header() {
                 {openDropdown && user && (
                     <div className="user-dropdown">
                         <p>Olá, <strong>{user.name}</strong> 👋</p>
-                        <button
-                            onClick={() => {
-                                localStorage.removeItem("token");
-                                setToken(null);
-                                setOpenDropdown(false);
-                            }}
-                        >
-                            Sair
-                        </button>
+                        <button onClick={goToProfile}>Minhas Informações</button>
+                        <div className="separator" />
+                        <button className="logout" onClick={handleLogout}>Sair</button>
                     </div>
                 )}
             </div>

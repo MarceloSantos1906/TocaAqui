@@ -1,0 +1,103 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #121212;
+    font-family: 'Arial', sans-serif;
+}
+
+.profile-container {
+    width: 100%;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: row;
+    margin: 2rem auto;
+    width: 95%;
+    padding: 2rem;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    gap: 2rem;
+}
+
+.profile-info-section {
+    flex: 0 0 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 2px solid #a5d6a7;
+}
+
+.profile-info-section h2 {
+    margin-bottom: 0.5rem;
+}
+
+.profile-info-section p {
+    font-size: 16px;
+    margin: 0.3rem 0;
+}
+
+.profile-courses-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 75vh;
+    align-items: center;
+}
+
+.add-course-btn {
+    background-color: #a5d6a7;
+    color: #121212;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s ease;
+    width: 40%;
+}
+
+.add-course-btn:hover {
+    background-color: #81c784;
+}
+
+.course-notfound {
+    width: 250px;
+    padding: 3rem;
+}
+
+.courses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.course-card {
+    background-color: #2c2c2c;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.course-card h4 {
+    margin: 0 0 0.5rem 0;
+}
+
+.error {
+    color: #e53935;
+    font-weight: 500;
+    margin-top: 1rem;
+}
