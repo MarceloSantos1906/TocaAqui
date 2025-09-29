@@ -2,32 +2,33 @@ import { Link, useSearchParams } from 'react-router-dom';
 import musicianCello from '@/assets/mulher.png';
 import musicianFlute from '@/assets/carinha-flauta.png';
 import musicianGuitar from '@/assets/carinha-violao.png';
-import professorImg from '@/assets/professora.png';
 import './Home.css';
 import Header from '../../components/Header';
 import { useEffect, useState } from 'react';
-import professorsJson from '../../data/professors.json'
+import { Bounce, toast } from 'react-toastify';
 
-interface professors {
-    id: number;
-    picture: string;
-    name: string;
-    location: string;
-}
-
-interface Instrument {
+interface Category {
     id: string;
     name: string;
     description: string;
-    courseCategory: any[];
     logoUrl: string;
+}
+
+interface Course {
+    id: string;
+    name: string;
+    description: string;
+    lessonPrice: string;
+    thumbnailPicture: string;
+    category: Category;
+    disponibleDays: { day: string }[];
 }
 
 function HomePage() {
     const [limit, setLimit] = useState(6);
     const [search, setSearch] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
-    const [instruments, setInstruments] = useState<Instrument[]>([]);
+    const [courses, setCourses] = useState<Course[]>([]);
 
     useEffect(() => {
         const cityParam = searchParams.get("cidade") || "";
@@ -35,17 +36,45 @@ function HomePage() {
     }, [searchParams]);
 
     useEffect(() => {
-        async function fetchInstruments() {
+        async function fetchCourses() {
             try {
-                const response = await fetch("/api/categories/find-all", { method: "GET" });
+                const response = await fetch("/api/courses/find-all", { method: "GET" });
+
+                if (!response.ok) {
+                    let errorMessage = "Erro ao buscar cursos";
+                    try {
+                        const errorData = await response.json();
+                        errorMessage = errorData.message || errorMessage;
+                    } catch {
+                    }
+                    callToast(errorMessage, "error");
+                    return;
+                }
+
                 const data = await response.json();
-                setInstruments(data);
+                setCourses(data.courses);
             } catch (error) {
-                console.error("Error fetching categories:", error);
+                callToast("Erro de conexão com o servidor", "error");
+                console.error("Error fetching courses:", error);
             }
         }
-        fetchInstruments();
+
+        fetchCourses();
     }, []);
+
+    const callToast = (message: string, type: "success" | "error" = "success") => {
+        toast[type](message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Bounce,
+        });
+    };
 
     const handleSearch = (param: string) => {
         setSearch(param);
@@ -58,8 +87,6 @@ function HomePage() {
         }
         setSearchParams(newParams);
     };
-
-    const professors: professors[] = professorsJson.professors;
 
     return (
         <div className='container'>
@@ -104,37 +131,30 @@ function HomePage() {
                         </div>
                     </section>
 
-                    <section className="instruments-section">
-                        {instruments.map((instrument, index) => (
-                            <Link to={'/'} 
-                            className='instrument-link' 
-                            key={instrument.id}
-                            title={instrument.description}
-                            >
-                                <div className="instrument-icon">
-                                    <img src={instrument.logoUrl} alt={instrument.name} />
-                                </div>
-                            </Link>
-                        ))}
-                    </section>
+                    <section className="courses-section">
+                        <h2>Confira nossos cursos disponíveis</h2>
+                        <div className="courses-grid">
+                            {courses.slice(0, limit).map((course) => (
+                                <Link to={`/course/${course.id}`} className='course-link' key={course.id}>
+                                    <div className="course-card">
+                                        <div className="course-image">
+                                            <img src={course.thumbnailPicture} alt={course.name} />
+                                        </div>
+                                        <h3>{course.name}</h3>
+                                        <p>{course.category.name}</p>
 
-                    <section className="professors-section">
-                        <h2>Os melhores professores particulares de iniciação musical</h2>
-                        <div className="professors-grid">
-                            {professors.map((prof, index) => (
-                                index < limit &&
-                                <Link to={`/professor/${prof.id}`} className='professor-link' key={index}>
-                                    <div className="professor-card" key={index}>
-                                        <img src={professorImg} alt={prof.name} />
-                                        <h3>{prof.name}</h3>
-                                        <p>{prof.location}</p>
+                                        <div className="course-overlay">
+                                            <p>{course.description}</p>
+                                        </div>
                                     </div>
                                 </Link>
                             ))}
                         </div>
-                        <button className="more-professors-btn" onClick={() => setLimit(limit + 6)}>
-                            Encontrar mais professores <span>&rarr;</span>
-                        </button>
+                        {limit < courses.length && (
+                            <button className="more-courses-btn" onClick={() => setLimit(limit + 6)}>
+                                Carregar mais cursos <span>&rarr;</span>
+                            </button>
+                        )}
                     </section>
                 </main>
 

@@ -48,11 +48,11 @@ function Header() {
         setToken(null);
         setUser(null);
         setOpenDropdown(false);
-        navigate("/"); // opcional: redireciona para home
+        navigate("/");
     };
 
     const goToProfile = () => {
-        navigate("/minhas-informacoes"); // rota da página de perfil
+        navigate("/profile");
         setOpenDropdown(false);
     };
 
