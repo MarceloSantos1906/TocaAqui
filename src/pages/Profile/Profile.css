@@ -5,6 +5,7 @@
     min-height: 100vh;
     background-color: #121212;
     font-family: 'Arial', sans-serif;
+    color: #fff;
 }
 
 .profile-card {
@@ -13,7 +14,6 @@
     margin: 2rem auto;
     width: 95%;
     max-width: 1400px;
-    /* limita para telas muito grandes */
     padding: 2rem;
     background-color: #1e1e1e;
     border-radius: 12px;
@@ -28,6 +28,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
 .profile-picture {
@@ -41,6 +42,7 @@
 
 .profile-info-section h2 {
     margin-bottom: 0.5rem;
+    color: #a5d6a7;
 }
 
 .profile-info-section p {
@@ -54,6 +56,22 @@
     flex-direction: column;
     min-height: 75vh;
     align-items: center;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.profile-courses-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.profile-courses-section::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 8px;
+}
+
+.profile-courses-section::-webkit-scrollbar-track {
+    background-color: #1e1e1e;
 }
 
 .add-course-btn {
@@ -64,10 +82,9 @@
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-top: 1.5rem;
     transition: background-color 0.3s ease;
     width: 40%;
-    margin-top: 1.5rem;
 }
 
 .add-course-btn:hover {
@@ -77,6 +94,7 @@
 .course-notfound {
     width: 250px;
     padding: 3rem;
+    margin: auto;
 }
 
 .courses-list {
@@ -88,7 +106,7 @@
 
 .course-card {
     background: linear-gradient(145deg, #1f1f1f, #2b2b2b);
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     display: flex;
@@ -99,7 +117,7 @@
 }
 
 .course-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
 }
 
@@ -148,22 +166,54 @@
     margin-top: 0.3rem;
 }
 
-
-.profile-courses-section {
-    max-height: calc(100vh - 200px);
-    overflow-y: auto;
-    padding-right: 0.5rem;
+.profile-lessons-section {
+    width: 100%;
+    margin-top: 2rem;
 }
 
-.profile-courses-section::-webkit-scrollbar {
-    width: 8px;
+.profile-lessons-section h3 {
+    color: #a5d6a7;
+    margin-bottom: 1rem;
 }
 
-.profile-courses-section::-webkit-scrollbar-thumb {
-    background-color: #555;
-    border-radius: 8px;
+.profile-lessons-section ul {
+    list-style: none;
+    padding-left: 0;
 }
 
-.profile-courses-section::-webkit-scrollbar-track {
-    background-color: #1e1e1e;
+.profile-lessons-section li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #2b2b2b;
+    font-size: 0.9rem;
+}
+
+.profile-lessons-section li strong {
+    color: #a5d6a7;
+}
+
+.profile-lessons-section li em {
+    color: #ccc;
+}
+
+.loading-text, .error {
+    text-align: center;
+    margin-top: 2rem;
+    color: #a5d6a7;
+    font-weight: bold;
+}
+
+@media (max-width: 992px) {
+    .profile-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-info-section {
+        flex: none;
+        width: 100%;
+    }
+
+    .profile-courses-section {
+        width: 100%;
+    }
 }
