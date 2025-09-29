@@ -4,10 +4,15 @@ import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Header from "../../components/Header";
 import notFound from '@/assets/notfound.svg'
+import AddCourseModal from '../../components/AddCourseModal';
 
 interface RoleInterface {
     id?: string;
     permission: "Professor" | "Estudante";
+}
+
+interface DisponibleDaysInterface {
+    day: string;
 }
 
 interface CourseInterface {
@@ -16,7 +21,7 @@ interface CourseInterface {
     description: string;
     lessonPrice: number;
     thumbnailPicture: string;
-    days: string[];
+    disponibleDays: DisponibleDaysInterface[];
 }
 
 interface UserInterface {
@@ -34,7 +39,18 @@ function ProfilePage() {
     const [user, setUser] = useState<UserInterface | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const token = localStorage.getItem("token");
+
+    const handleCourseAdded = () => {
+        setLoading(true);
+        setUser(null);
+    };
+
+    const truncate = (text: string, max = 100) => {
+        return text.length > max ? text.slice(0, max) + "..." : text
+    };
+
 
     useEffect(() => {
         if (!token) return;
@@ -80,7 +96,7 @@ function ProfilePage() {
         };
 
         fetchUser();
-    }, [token]);
+    }, [token, loading]);
 
     if (!token) return <Navigate to="/login" />;
     if (loading) return <p>Carregando...</p>;
@@ -91,7 +107,6 @@ function ProfilePage() {
         <div className="profile-container">
             <Header />
             <div className="profile-card">
-                {/* Left: User info */}
                 <div className="profile-info-section">
                     {user.profilePicture && (
                         <img src={user.profilePicture} alt={user.name} className="profile-picture" />
@@ -102,8 +117,6 @@ function ProfilePage() {
                     {user.cpf && <p><strong>CPF:</strong> {user.cpf}</p>}
                     {user.authorities && <p><strong>Função:</strong> {user.authorities.permission}</p>}
                 </div>
-
-                {/* Right: Courses */}
                 <div className="profile-courses-section">
                     <h3>Cursos</h3>
 
@@ -112,18 +125,33 @@ function ProfilePage() {
                     ) : (
                         <div className="courses-list">
                             {user.courses.map(course => (
-                                <div key={course.id} className="course-card">
-                                    <h4>{course.name}</h4>
-                                    <p>{course.description}</p>
-                                    <p>Preço: R$ {course.lessonPrice}</p>
-                                    <p>Dias: {course.days.join(", ")}</p>
+                                <div className="course-card" key={course.id}>
+                                    {course.thumbnailPicture && <img src={course.thumbnailPicture} alt={course.name} />}
+                                    <div className="course-card-content">
+                                        <h4>{course.name}</h4>
+                                        <p>{truncate(course.description)}</p>
+                                        <span className="price">Preço: R$ {course.lessonPrice}</span>
+                                        <span className="days">Dias: {course.disponibleDays.map(d => d.day).join(", ")}</span>
+                                    </div>
                                 </div>
                             ))}
                         </div>
                     )}
 
                     {user.authorities?.permission === "Professor" && (
-                        <button className="add-course-btn">Adicionar Novo Curso</button>
+                        <>
+                            <button className="add-course-btn" onClick={() => setIsModalOpen(true)}>
+                                Adicionar Novo Curso
+                            </button>
+
+                            <AddCourseModal
+                                isOpen={isModalOpen}
+                                onClose={() => setIsModalOpen(false)}
+                                token={token!}
+                                userId={user.id}
+                                onCourseAdded={handleCourseAdded}
+                            />
+                        </>
                     )}
 
                 </div>
